@@ -202,3 +202,8 @@ class TestAccountService(TestCase):
         """It should return 204 even if Account does not exist"""
         resp = self.client.delete(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_method_not_allowed(self):
+        """It should return 405 Method Not Allowed for unsupported HTTP methods"""
+        resp = self.client.delete(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
