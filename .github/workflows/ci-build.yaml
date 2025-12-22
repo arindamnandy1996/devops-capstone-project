@@ -1,4 +1,5 @@
 name: CI Build
+
 on:
   push:
     branches:
@@ -14,21 +15,22 @@ jobs:
 
     services:
       postgres:
-        image: postgres:alpine
+        image: postgres:15-alpine
         ports:
           - 5432:5432
         env:
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: pgs3cr3t
           POSTGRES_DB: testdb
         options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
@@ -40,7 +42,7 @@ jobs:
           flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: Run unit tests with nose
+      - name: Run unit tests
         run: nosetests
         env:
-          DATABASE_URI: "postgresql://postgres:pgs3cr3t@postgres:5432/testdb"
+          DATABASE_URI: "postgresql://postgres:pgs3cr3t@127.0.0.1:5432/testdb"
