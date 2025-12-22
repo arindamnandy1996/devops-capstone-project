@@ -143,7 +143,7 @@ class Account(db.Model, PersistentBase):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
-        
+
     @staticmethod
     def parse_date(date_str):
         """Parse ISO 8601 date string into a date object"""
