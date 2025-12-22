@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: accounts
-          image: us.icr.io/sn-labs-arindamnandy/accounts:1
+          image: IMAGE_NAME_HERE
           resources: {}
 
           env:
