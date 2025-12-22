@@ -143,3 +143,13 @@ class Account(db.Model, PersistentBase):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+        
+    @staticmethod
+    def parse_date(date_str):
+        """Parse ISO 8601 date string into a date object"""
+        try:
+            return date.fromisoformat(date_str)
+        except (TypeError, ValueError) as error:
+            raise DataValidationError(
+                f"Invalid date format: {date_str}"
+            ) from error

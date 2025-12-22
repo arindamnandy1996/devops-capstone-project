@@ -113,9 +113,21 @@ def update_accounts(account_id):
             f"Account with id [{account_id}] could not be found.",
         )
 
-    account.deserialize(request.get_json())
-    account.update()
+    data = request.get_json()
 
+    # Partial update (DO NOT use deserialize for PUT)
+    if "name" in data:
+        account.name = data["name"]
+    if "email" in data:
+        account.email = data["email"]
+    if "address" in data:
+        account.address = data["address"]
+    if "phone_number" in data:
+        account.phone_number = data["phone_number"]
+    if "date_joined" in data:
+        account.date_joined = date.fromisoformat(data["date_joined"])
+
+    account.update()
     return jsonify(account.serialize()), status.HTTP_200_OK
 
 
